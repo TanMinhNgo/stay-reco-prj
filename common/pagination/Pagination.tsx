@@ -3,7 +3,7 @@
 import { ChevronLeft, ChevronRight, MoreHorizontal } from 'lucide-react';
 import { cn } from '@/lib/utils';
 
-type PageItem = number | 'ellipsis';
+type PageItem = number | 'ellipsis-start' | 'ellipsis-end';
 
 type PaginationProps = {
   currentPage: number;
@@ -29,13 +29,13 @@ function getPageItems(
   const start = Math.max(2, currentPage - siblingCount);
   const end = Math.min(totalPages - 1, currentPage + siblingCount);
 
-  if (start > 2) pages.push('ellipsis');
+  if (start > 2) pages.push('ellipsis-start');
 
   for (let page = start; page <= end; page += 1) {
     pages.push(page);
   }
 
-  if (end < totalPages - 1) pages.push('ellipsis');
+  if (end < totalPages - 1) pages.push('ellipsis-end');
 
   pages.push(totalPages);
   return pages;
@@ -78,10 +78,10 @@ export default function Pagination({
           </button>
         </li>
 
-        {pageItems.map((item, index) =>
-          item === 'ellipsis' ? (
+        {pageItems.map((item) =>
+          typeof item !== 'number' ? (
             <li
-              key={`ellipsis-${index}`}
+              key={item}
               className="flex size-11 items-center justify-center"
               aria-hidden="true"
             >

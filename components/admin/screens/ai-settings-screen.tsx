@@ -810,7 +810,7 @@ function Region({
       ? 'bg-green-200 text-green-700'
       : 'bg-gray-300 text-muted-foreground';
   return (
-    <label className="flex cursor-pointer gap-3 rounded-xl bg-muted p-3">
+    <form className="flex cursor-pointer gap-3 rounded-xl bg-muted p-3">
       <input
         type="radio"
         name="region"
@@ -830,7 +830,7 @@ function Region({
           {label}
         </span>
       </span>
-    </label>
+    </form>
   );
 }
 function MiniMetric({ label, value }: { label: string; value: string }) {
