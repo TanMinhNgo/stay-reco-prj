@@ -76,7 +76,7 @@ export function AiSettings({ notify }: { notify: (message: string) => void }) {
         <div className="relative flex flex-col justify-between gap-6 md:flex-row md:items-center">
           <div className="max-w-3xl">
             <span className="inline-flex items-center gap-2 rounded-full bg-white/10 px-3 py-1 text-[11px] font-medium uppercase tracking-wide">
-              <span className="size-1.5 animate-pulse rounded-full bg-success-soft" />
+              <span className="size-1.5 animate-pulse rounded-full bg-success-soft" />{' '}
               Cluster v3.8 • Live Pipeline
             </span>
             <h1 className="mt-3 text-2xl font-bold tracking-tight md:text-3xl">
@@ -201,11 +201,11 @@ export function AiSettings({ notify }: { notify: (message: string) => void }) {
         >
           <div className="flex gap-4 text-xs text-muted-foreground">
             <span>
-              <i className="mr-1 inline-block size-2 rounded-full bg-green-500" />
+              <i className="mr-1 inline-block size-2 rounded-full bg-green-500" />{' '}
               Ping: 22ms
             </span>
             <span>
-              <i className="mr-1 inline-block size-2 rounded-full bg-green-500" />
+              <i className="mr-1 inline-block size-2 rounded-full bg-green-500" />{' '}
               TTFB: 85ms
             </span>
           </div>

@@ -483,7 +483,7 @@ export function LogsPage({ notify }: { notify: (message: string) => void }) {
                 <FileJson size={18} />
               </span>
               <span>
-                Chi tiết Biến động Dữ liệu (JSON Diff Record)
+                Chi tiết Biến động Dữ liệu (JSON Diff Record){' '}
                 <small className="mt-1 block font-mono text-[10px] font-normal text-muted-foreground">
                   Trace-ID: TRC-20260524-88902194 | Entity: {selected?.target}
                 </small>

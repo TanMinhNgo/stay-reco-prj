@@ -230,17 +230,17 @@ export function UserDetail({
           </div>
           <div className="grid grid-cols-3 gap-3 rounded-xl bg-[#f1f3f9] p-3 text-center text-xs">
             <span>
-              Hồ sơ pháp lý
+              Hồ sơ pháp lý{' '}
               <strong className="mt-1 block text-[#0b3c27]">Đầy đủ 100%</strong>
             </span>
             <span>
-              Mức bảo chứng
+              Mức bảo chứng{' '}
               <strong className="mt-1 block text-[#013758]">
                 50.000.000 ₫
               </strong>
             </span>
             <span>
-              Tình trạng ví
+              Tình trạng ví{' '}
               <strong className="mt-1 block text-[#013758]">Sẵn sàng</strong>
             </span>
           </div>

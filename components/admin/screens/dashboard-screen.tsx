@@ -321,11 +321,11 @@ export function Dashboard({ notify }: { notify: (message: string) => void }) {
               </div>
               <div className="flex items-center gap-4 text-xs">
                 <span className="flex items-center gap-1.5">
-                  <i className="size-3 rounded-sm bg-[#013758]" />
+                  <i className="size-3 rounded-sm bg-[#013758]" />{' '}
                   Số đơn đặt
                 </span>
                 <span className="flex items-center gap-1.5">
-                  <i className="size-3 rounded-sm bg-[#934a33]" />
+                  <i className="size-3 rounded-sm bg-[#934a33]" />{' '}
                   GMV (triệu ₫)
                 </span>
               </div>
