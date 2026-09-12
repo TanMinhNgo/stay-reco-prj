@@ -1,25 +1,37 @@
-"use client";
+'use client';
 
-import { useEffect, useMemo, useState } from "react";
-import { format } from "date-fns";
-import { vi } from "date-fns/locale";
-import { CalendarDays, ChevronDown, Search, SlidersHorizontal, X } from "lucide-react";
-import type { DateRange } from "react-day-picker";
-import { Badge } from "@/components/ui/badge";
-import { Button } from "@/components/ui/button";
-import { Calendar } from "@/components/ui/calendar";
-import { Checkbox } from "@/components/ui/checkbox";
-import { Input } from "@/components/ui/input";
+import { useEffect, useMemo, useState } from 'react';
+import { format } from 'date-fns';
+import { vi } from 'date-fns/locale';
+import {
+  CalendarDays,
+  ChevronDown,
+  Search,
+  SlidersHorizontal,
+  X,
+} from 'lucide-react';
+import type { DateRange } from 'react-day-picker';
+import { Badge } from '@/components/ui/badge';
+import { Button } from '@/components/ui/button';
+import { Calendar } from '@/components/ui/calendar';
+import { Checkbox } from '@/components/ui/checkbox';
+import { Input } from '@/components/ui/input';
 import {
   Popover,
   PopoverContent,
   PopoverHeader,
   PopoverTitle,
   PopoverTrigger,
-} from "@/components/ui/popover";
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
-import { useDebounce } from "@/hooks/use-debounce";
-import { cn } from "@/lib/utils";
+} from '@/components/ui/popover';
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from '@/components/ui/select';
+import { useDebounce } from '@/hooks/use-debounce';
+import { cn } from '@/lib/utils';
 
 export type FilterOption = {
   label: string;
@@ -35,16 +47,16 @@ type BaseFilter = {
 
 export type FilterDefinition =
   | (BaseFilter & {
-      type: "select";
+      type: 'select';
       options: FilterOption[];
       allLabel?: string;
     })
   | (BaseFilter & {
-      type: "multi-select";
+      type: 'multi-select';
       options: FilterOption[];
     })
   | (BaseFilter & {
-      type: "date-range";
+      type: 'date-range';
     });
 
 export type FilterValue = string | string[] | DateRange | undefined;
@@ -63,13 +75,18 @@ type AppFilterProps = {
 };
 
 function isDateRange(value: FilterValue): value is DateRange {
-  return Boolean(value && !Array.isArray(value) && typeof value === "object" && ("from" in value || "to" in value));
+  return Boolean(
+    value &&
+    !Array.isArray(value) &&
+    typeof value === 'object' &&
+    ('from' in value || 'to' in value),
+  );
 }
 
 function countActiveFilters(values: FilterValues) {
   return Object.values(values).reduce((count, value) => {
     if (Array.isArray(value)) return count + value.length;
-    if (typeof value === "string") return count + (value ? 1 : 0);
+    if (typeof value === 'string') return count + (value ? 1 : 0);
     if (isDateRange(value)) return count + (value.from || value.to ? 1 : 0);
     return count;
   }, 0);
@@ -77,15 +94,15 @@ function countActiveFilters(values: FilterValues) {
 
 function formatDateRange(value?: DateRange) {
   if (!value?.from) return null;
-  if (!value.to) return format(value.from, "dd/MM/yyyy");
-  return `${format(value.from, "dd/MM/yyyy")} – ${format(value.to, "dd/MM/yyyy")}`;
+  if (!value.to) return format(value.from, 'dd/MM/yyyy');
+  return `${format(value.from, 'dd/MM/yyyy')} – ${format(value.to, 'dd/MM/yyyy')}`;
 }
 
 export default function AppFilter({
   filters = [],
   initialValues = {},
-  initialSearch = "",
-  searchPlaceholder = "Tìm kiếm...",
+  initialSearch = '',
+  searchPlaceholder = 'Tìm kiếm...',
   debounceMs = 400,
   onSearchChange,
   onFiltersChange,
@@ -109,16 +126,19 @@ export default function AppFilter({
   };
 
   const resetFilters = () => {
-    setSearchQuery("");
+    setSearchQuery('');
     setValues({});
-    onSearchChange?.("");
+    onSearchChange?.('');
     onFiltersChange?.({});
     onReset?.();
   };
 
   return (
     <section
-      className={cn("flex flex-col gap-3 rounded-xl border border-border bg-white p-3 shadow-card", className)}
+      className={cn(
+        'flex flex-col gap-3 rounded-xl border border-border bg-white p-3 shadow-card',
+        className,
+      )}
       aria-label="Bộ lọc dữ liệu"
     >
       <div className="flex flex-col gap-3 xl:flex-row xl:items-center">
@@ -141,7 +161,7 @@ export default function AppFilter({
               type="button"
               variant="ghost"
               size="icon-sm"
-              onClick={() => setSearchQuery("")}
+              onClick={() => setSearchQuery('')}
               className="absolute top-1/2 right-2 -translate-y-1/2 text-muted-foreground"
               aria-label="Xóa nội dung tìm kiếm"
             >
@@ -152,31 +172,46 @@ export default function AppFilter({
 
         <div className="flex flex-1 flex-wrap items-center gap-2">
           {filters.map((filter) => {
-            if (filter.type === "select") {
+            if (filter.type === 'select') {
               const rawValue = values[filter.key];
-              const selectedValue = typeof rawValue === "string" ? rawValue : "";
+              const selectedValue =
+                typeof rawValue === 'string' ? rawValue : '';
               const selectedLabel = selectedValue
-                ? filter.options.find((option) => option.value === selectedValue)?.label
-                : filter.allLabel ?? `Tất cả ${filter.label.toLowerCase()}`;
+                ? filter.options.find(
+                    (option) => option.value === selectedValue,
+                  )?.label
+                : (filter.allLabel ?? `Tất cả ${filter.label.toLowerCase()}`);
 
               return (
                 <Select
                   key={filter.key}
-                  value={selectedValue || "__all__"}
-                  onValueChange={(value) => updateFilter(filter.key, value === "__all__" ? undefined : String(value))}
+                  value={selectedValue || '__all__'}
+                  onValueChange={(value) =>
+                    updateFilter(
+                      filter.key,
+                      value === '__all__' ? undefined : String(value),
+                    )
+                  }
                 >
                   <SelectTrigger className="h-11 min-w-40 bg-white px-3">
                     <SelectValue>{selectedLabel}</SelectValue>
                   </SelectTrigger>
                   <SelectContent align="start" className="rounded-xl p-1.5">
                     <SelectItem value="__all__" className="min-h-9 px-2.5">
-                      {filter.allLabel ?? `Tất cả ${filter.label.toLowerCase()}`}
+                      {filter.allLabel ??
+                        `Tất cả ${filter.label.toLowerCase()}`}
                     </SelectItem>
                     {filter.options.map((option) => (
-                      <SelectItem key={option.value} value={option.value} className="min-h-9 px-2.5">
+                      <SelectItem
+                        key={option.value}
+                        value={option.value}
+                        className="min-h-9 px-2.5"
+                      >
                         {option.label}
                         {option.count !== undefined && (
-                          <span className="ml-auto text-xs tabular-nums text-muted-foreground">{option.count}</span>
+                          <span className="ml-auto text-xs tabular-nums text-muted-foreground">
+                            {option.count}
+                          </span>
                         )}
                       </SelectItem>
                     ))}
@@ -185,20 +220,32 @@ export default function AppFilter({
               );
             }
 
-            if (filter.type === "multi-select") {
+            if (filter.type === 'multi-select') {
               const rawValue = values[filter.key];
-              const selectedValues: string[] = Array.isArray(rawValue) ? rawValue : [];
+              const selectedValues: string[] = Array.isArray(rawValue)
+                ? rawValue
+                : [];
 
               return (
                 <Popover key={filter.key}>
                   <PopoverTrigger className="inline-flex h-11 min-w-40 items-center justify-between gap-2 rounded-lg border border-input bg-white px-3 text-sm text-foreground focus-visible:outline-none">
                     <span className="truncate">{filter.label}</span>
                     <span className="ml-auto flex items-center gap-1.5">
-                      {selectedValues.length > 0 && <Badge className="h-5 min-w-5 px-1.5">{selectedValues.length}</Badge>}
-                      <ChevronDown className="size-4 text-muted-foreground" aria-hidden="true" />
+                      {selectedValues.length > 0 && (
+                        <Badge className="h-5 min-w-5 px-1.5">
+                          {selectedValues.length}
+                        </Badge>
+                      )}
+                      <ChevronDown
+                        className="size-4 text-muted-foreground"
+                        aria-hidden="true"
+                      />
                     </span>
                   </PopoverTrigger>
-                  <PopoverContent align="start" className="w-64 rounded-xl p-2.5">
+                  <PopoverContent
+                    align="start"
+                    className="w-64 rounded-xl p-2.5"
+                  >
                     <PopoverHeader className="px-1 pb-1">
                       <PopoverTitle>{filter.label}</PopoverTitle>
                     </PopoverHeader>
@@ -218,13 +265,19 @@ export default function AppFilter({
                                   filter.key,
                                   nextChecked
                                     ? [...selectedValues, option.value]
-                                    : selectedValues.filter((value) => value !== option.value),
+                                    : selectedValues.filter(
+                                        (value) => value !== option.value,
+                                      ),
                                 )
                               }
                             />
-                            <span className="min-w-0 flex-1 truncate">{option.label}</span>
+                            <span className="min-w-0 flex-1 truncate">
+                              {option.label}
+                            </span>
                             {option.count !== undefined && (
-                              <span className="text-xs tabular-nums text-muted-foreground">{option.count}</span>
+                              <span className="text-xs tabular-nums text-muted-foreground">
+                                {option.count}
+                              </span>
                             )}
                           </label>
                         );
@@ -236,17 +289,31 @@ export default function AppFilter({
             }
 
             const rawValue = values[filter.key];
-            const selectedRange: DateRange | undefined = isDateRange(rawValue) ? rawValue : undefined;
+            const selectedRange: DateRange | undefined = isDateRange(rawValue)
+              ? rawValue
+              : undefined;
             const rangeLabel = formatDateRange(selectedRange);
 
             return (
               <Popover key={filter.key}>
                 <PopoverTrigger className="inline-flex h-11 min-w-48 items-center gap-2 rounded-lg border border-input bg-white px-3 text-sm text-foreground focus-visible:outline-none">
-                  <CalendarDays className="size-4 shrink-0 text-muted-foreground" strokeWidth={1.75} aria-hidden="true" />
-                  <span className={cn("truncate", !rangeLabel && "text-muted-foreground")}>
+                  <CalendarDays
+                    className="size-4 shrink-0 text-muted-foreground"
+                    strokeWidth={1.75}
+                    aria-hidden="true"
+                  />
+                  <span
+                    className={cn(
+                      'truncate',
+                      !rangeLabel && 'text-muted-foreground',
+                    )}
+                  >
                     {rangeLabel ?? filter.placeholder ?? filter.label}
                   </span>
-                  <ChevronDown className="ml-auto size-4 shrink-0 text-muted-foreground" aria-hidden="true" />
+                  <ChevronDown
+                    className="ml-auto size-4 shrink-0 text-muted-foreground"
+                    aria-hidden="true"
+                  />
                 </PopoverTrigger>
                 <PopoverContent align="start" className="w-auto rounded-xl p-2">
                   <Calendar
@@ -261,10 +328,18 @@ export default function AppFilter({
           })}
 
           {hasActiveFilters && (
-            <Button type="button" variant="ghost" size="lg" onClick={resetFilters} className="h-11 px-3 text-muted-foreground">
+            <Button
+              type="button"
+              variant="ghost"
+              size="lg"
+              onClick={resetFilters}
+              className="h-11 px-3 text-muted-foreground"
+            >
               <X className="size-4" aria-hidden="true" />
               Xóa bộ lọc
-              {activeFilterCount > 0 && <Badge variant="secondary">{activeFilterCount}</Badge>}
+              {activeFilterCount > 0 && (
+                <Badge variant="secondary">{activeFilterCount}</Badge>
+              )}
             </Button>
           )}
         </div>
