@@ -109,8 +109,7 @@ export function Notice({
   onClose: () => void;
 }) {
   return (
-    <div
-      role="status"
+    <output
       className="fixed bottom-5 right-5 z-50 flex max-w-sm items-center gap-3 rounded-2xl border border-[#cde5ff] bg-white p-4 text-sm text-[#181c20] shadow-xl"
     >
       <Check size={18} className="shrink-0 text-[#35624a]" />
@@ -123,7 +122,7 @@ export function Notice({
       >
         <X size={16} />
       </Button>
-    </div>
+    </output>
   );
 }
 
@@ -140,12 +139,9 @@ export function Metric({
   icon: LucideIcon;
   state?: 'primary' | 'danger' | 'success';
 }) {
-  const color =
-    state === 'danger'
-      ? 'bg-[#ffdad6] text-[#ba1a1a]'
-      : state === 'success'
-        ? 'bg-[#edf4ee] text-[#35624a]'
-        : 'bg-[#eaf0f5] text-[#013758]';
+  let color = 'bg-[#eaf0f5] text-[#013758]';
+  if (state === 'danger') color = 'bg-[#ffdad6] text-[#ba1a1a]';
+  if (state === 'success') color = 'bg-[#edf4ee] text-[#35624a]';
   return (
     <Panel className="p-5">
       <div className="flex items-start justify-between gap-3">
