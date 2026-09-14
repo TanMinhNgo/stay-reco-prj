@@ -28,7 +28,7 @@ export default function AccountSubNav({ activeTab }: AccountSubNavProps) {
   ];
 
   return (
-    <div className="w-full bg-white border-b border-border sticky top-16 z-30 shadow-xs">
+    <div className="sticky top-16 z-30 w-full border-b border-border bg-white shadow-xs lg:top-20">
       <div className="mx-auto max-w-[100rem] px-4 sm:px-6 lg:px-8">
         <div className="flex items-center gap-1 overflow-x-auto py-2 scrollbar-none">
           {tabs.map((tab) => {

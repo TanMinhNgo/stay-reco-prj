@@ -1,5 +1,6 @@
 import type { Metadata } from 'next';
 import { Be_Vietnam_Pro } from 'next/font/google';
+import AuthRouteGuard from '@/components/auth/AuthRouteGuard';
 import './globals.css';
 
 const beVietnamPro = Be_Vietnam_Pro({
@@ -17,7 +18,7 @@ export const metadata: Metadata = {
 export default function RootLayout({ children }: LayoutProps<'/'>) {
   return (
     <html lang="vi" className={`${beVietnamPro.variable} h-full antialiased`}>
-      <body className="min-h-full flex flex-col">{children}</body>
+      <body className="min-h-full flex flex-col"><AuthRouteGuard>{children}</AuthRouteGuard></body>
     </html>
   );
 }

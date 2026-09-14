@@ -1,19 +1,23 @@
 'use client';
 
-import React, { useState } from 'react';
+import React, { Suspense, useState } from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
+import { useRouter, useSearchParams } from 'next/navigation';
 import Header from '@/components/layout/Header';
 import Footer from '@/components/layout/Footer';
+import { AuthSocialActions } from '@/components/auth/AuthSocialActions';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Checkbox } from '@/components/ui/checkbox';
 import { Eye, EyeOff, Lock, Mail, User, Phone, ArrowRight, Sparkles, CheckCircle2 } from 'lucide-react';
+import { getSafeNextPath, useAuthStore } from '@/lib/auth-store';
 
-export default function RegisterPage() {
+function RegisterPageContent() {
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
+  const [error, setError] = useState('');
   const [formData, setFormData] = useState({
     fullName: '',
     email: '',
@@ -22,9 +26,40 @@ export default function RegisterPage() {
     confirmPassword: '',
     agreeTerms: false,
   });
+  const router = useRouter();
+  const searchParams = useSearchParams();
+  const register = useAuthStore((state) => state.register);
+  const next = searchParams.get('next');
+  const loginHref = next ? `/login?next=${encodeURIComponent(next)}` : '/login';
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
+    setError('');
+    if (formData.password.length < 8) {
+      setError('Mật khẩu cần có ít nhất 8 ký tự.');
+      return;
+    }
+    if (formData.password !== formData.confirmPassword) {
+      setError('Mật khẩu xác nhận chưa khớp.');
+      return;
+    }
+    if (!formData.agreeTerms) {
+      setError('Vui lòng đồng ý với Điều khoản sử dụng và Chính sách bảo mật.');
+      return;
+    }
+
+    const result = register({
+      name: formData.fullName,
+      email: formData.email,
+      phone: formData.phone,
+      password: formData.password,
+    });
+    if (!result.success) {
+      setError(result.message);
+      return;
+    }
+
+    router.replace(getSafeNextPath(next));
   };
 
   return (
@@ -106,53 +141,7 @@ export default function RegisterPage() {
                 </p>
               </div>
 
-              {/* Social Register */}
-              <div className="grid grid-cols-2 gap-3 mb-5">
-                <Button
-                  variant="outline"
-                  type="button"
-                  className="h-10 sm:h-11 justify-center gap-2 border-border hover:bg-muted font-medium text-xs sm:text-sm"
-                >
-                  <svg className="size-4" viewBox="0 0 24 24">
-                    <path
-                      fill="#EA4335"
-                      d="M12 5c1.6 0 3 .6 4.1 1.6l3.1-3.1C17.3 1.7 14.8 1 12 1 7.5 1 3.7 3.6 1.9 7.3l3.7 2.9C6.5 7.2 9 5 12 5z"
-                    />
-                    <path
-                      fill="#4285F4"
-                      d="M23.5 12.3c0-.8-.1-1.6-.2-2.3H12v4.5h6.5c-.3 1.5-1.1 2.8-2.4 3.7l3.7 2.9c2.2-2 3.7-5 3.7-8.8z"
-                    />
-                    <path
-                      fill="#FBBC05"
-                      d="M5.6 14.8c-.2-.7-.4-1.5-.4-2.3s.2-1.6.4-2.3L1.9 7.3C.7 9.7 0 10.8 0 12s.7 2.3 1.9 4.7l3.7-2.9z"
-                    />
-                    <path
-                      fill="#34A853"
-                      d="M12 23c3.2 0 6-1.1 8-3l-3.7-2.9c-1.1.7-2.5 1.2-4.3 1.2-3 0-5.5-2.2-6.4-5.2L1.9 16C3.7 19.7 7.5 23 12 23z"
-                    />
-                  </svg>
-                  <span>Google</span>
-                </Button>
-                <Button
-                  variant="outline"
-                  type="button"
-                  className="h-10 sm:h-11 justify-center gap-2 border-border hover:bg-muted font-medium text-xs sm:text-sm"
-                >
-                  <svg className="size-4" viewBox="0 0 24 24">
-                    <path fill="#1877F2" d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z" />
-                  </svg>
-                  <span>Facebook</span>
-                </Button>
-              </div>
-
-              <div className="relative my-5 text-center">
-                <div className="absolute inset-0 flex items-center">
-                  <div className="w-full border-t border-border" />
-                </div>
-                <span className="relative bg-white px-3 text-xs text-muted-foreground uppercase font-medium">
-                  hoặc đăng ký bằng Form
-                </span>
-              </div>
+              <AuthSocialActions dividerLabel="hoặc đăng ký bằng Form" />
 
               <form onSubmit={handleSubmit} className="space-y-3.5">
                 <div className="space-y-1">
@@ -229,6 +218,7 @@ export default function RegisterPage() {
                       type="button"
                       onClick={() => setShowPassword(!showPassword)}
                       className="absolute right-3.5 top-1/2 -translate-y-1/2 text-muted-foreground hover:text-foreground"
+                      aria-label={showPassword ? 'Ẩn mật khẩu' : 'Hiện mật khẩu'}
                     >
                       {showPassword ? <EyeOff className="size-4" /> : <Eye className="size-4" />}
                     </button>
@@ -254,6 +244,7 @@ export default function RegisterPage() {
                       type="button"
                       onClick={() => setShowConfirmPassword(!showConfirmPassword)}
                       className="absolute right-3.5 top-1/2 -translate-y-1/2 text-muted-foreground hover:text-foreground"
+                      aria-label={showConfirmPassword ? 'Ẩn mật khẩu xác nhận' : 'Hiện mật khẩu xác nhận'}
                     >
                       {showConfirmPassword ? <EyeOff className="size-4" /> : <Eye className="size-4" />}
                     </button>
@@ -272,6 +263,8 @@ export default function RegisterPage() {
                   </Label>
                 </div>
 
+                {error && <p className="rounded-lg bg-red-50 px-3 py-2 text-xs font-medium text-red-700" role="alert">{error}</p>}
+
                 <Button
                   type="submit"
                   className="w-full h-10 sm:h-11 bg-primary text-primary-foreground hover:bg-[#193b56] font-semibold text-sm transition-all shadow-sm gap-2 mt-2"
@@ -283,7 +276,7 @@ export default function RegisterPage() {
 
               <div className="mt-6 text-center text-xs sm:text-sm text-muted-foreground">
                 Đã có tài khoản?{' '}
-                <Link href="/login" className="font-semibold text-primary hover:underline">
+                <Link href={loginHref} className="font-semibold text-primary hover:underline">
                   Đăng nhập tại đây
                 </Link>
               </div>
@@ -296,4 +289,8 @@ export default function RegisterPage() {
       <Footer />
     </div>
   );
+}
+
+export default function RegisterPage() {
+  return <Suspense fallback={null}><RegisterPageContent /></Suspense>;
 }

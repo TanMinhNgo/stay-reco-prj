@@ -60,7 +60,7 @@ export default function RewardsPage() {
 
   return (
     <div className="flex min-h-screen flex-col bg-background font-sans antialiased text-foreground">
-      <Header isAuthenticated user={{ name: 'Minh Anh' }} />
+      <Header />
 
       <main className="flex-1 w-full bg-[#f7f9ff]">
         <AccountSubNav activeTab="rewards" />

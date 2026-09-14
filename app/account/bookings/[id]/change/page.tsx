@@ -37,7 +37,7 @@ export default function ChangeBookingPage() {
 
   return (
     <div className="flex min-h-screen flex-col bg-background font-sans antialiased text-foreground">
-      <Header isAuthenticated user={{ name: 'Minh Anh' }} />
+      <Header />
 
       <main className="flex-1 w-full bg-[#f7f9ff] py-6 lg:py-10">
         <div className="mx-auto max-w-[100rem] px-4 sm:px-6 lg:px-8">

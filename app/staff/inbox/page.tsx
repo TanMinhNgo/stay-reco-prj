@@ -2,8 +2,6 @@
 
 import React, { useState } from "react";
 import Link from "next/link";
-import StaffSidebar from "@/components/staff/StaffSidebar";
-import StaffHeader from "@/components/staff/StaffHeader";
 import {
   MessageSquare,
   Search,
@@ -118,11 +116,8 @@ export default function StaffInboxPage() {
     "Chào anh Hoàng, StayReco xin lỗi chân thành về sự cố điều hòa tại P.402 làm ảnh hưởng giấc ngủ của anh. Lễ tân đã cử Kỹ thuật viên Nguyễn Văn Bình mang quạt êm sang hỗ trợ kiểm tra ngay lập tức. Khách sạn xin gửi tặng anh 1 Voucher trải nghiệm Spa / Ăn sáng bồi thường ạ!";
 
   return (
-    <div className="min-h-screen bg-[#f7f9ff] font-sans antialiased text-foreground">
-      <StaffSidebar />
-      <StaffHeader />
-
-      <main className="pl-[248px] pt-16 min-h-screen">
+    <div className="font-sans antialiased text-foreground">
+      <main>
         <div className="p-6 space-y-6 max-w-7xl mx-auto w-full">
           {/* Header & Title */}
           <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">

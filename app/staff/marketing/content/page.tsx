@@ -3,8 +3,6 @@
 import React, { useState } from "react";
 import Link from "next/link";
 import Image from "next/image";
-import StaffSidebar from "@/components/staff/StaffSidebar";
-import StaffHeader from "@/components/staff/StaffHeader";
 import {
   Sparkles,
   Search,
@@ -86,11 +84,8 @@ export default function StaffMarketingContentPage() {
   });
 
   return (
-    <div className="min-h-screen bg-[#f7f9ff] font-sans antialiased text-foreground">
-      <StaffSidebar />
-      <StaffHeader />
-
-      <main className="pl-[248px] pt-16 min-h-screen">
+    <div className="font-sans antialiased text-foreground">
+      <main>
         <div className="p-8 space-y-6 max-w-7xl mx-auto w-full">
           {/* Breadcrumb & Title */}
           <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">

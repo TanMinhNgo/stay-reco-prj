@@ -5,6 +5,7 @@ import Link from 'next/link';
 import Image from 'next/image';
 import Header from '@/components/layout/Header';
 import Footer from '@/components/layout/Footer';
+import AccountSubNav from '@/components/account/AccountSubNav';
 import AppBreadcrumb from '@/common/breadcrumb/AppBreadcrumb';
 import { Button } from '@/components/ui/button';
 import { Card } from '@/components/ui/card';
@@ -106,15 +107,17 @@ export default function MyBookingsPage() {
 
   return (
     <div className="flex min-h-screen flex-col bg-[#f7f9ff] font-sans antialiased text-[#202B36]">
-      <Header isAuthenticated user={{ name: 'Minh Anh' }} />
+      <Header />
 
       <main className="flex-1 w-full bg-[#f7f9ff]">
+        <AccountSubNav activeTab="bookings" />
+
         <div className="max-w-[1200px] mx-auto px-4 sm:px-6 py-6 sm:py-8 w-full">
           
           <AppBreadcrumb
             items={[
               { label: 'Trang chủ', href: '/' },
-              { label: 'Tài khoản', href: '/profile' },
+              { label: 'Tài khoản', href: '/account/profile' },
               { label: 'Chuyến đi của tôi', active: true },
             ]}
           />

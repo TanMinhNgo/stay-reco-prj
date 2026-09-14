@@ -3,7 +3,8 @@
 import React, { useState } from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
-import { Search, Bell, HelpCircle, User, Sparkles, Building2, LogOut } from 'lucide-react';
+import { useRouter } from 'next/navigation';
+import { Search, Bell, HelpCircle, Sparkles, Building2, LogOut } from 'lucide-react';
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -13,9 +14,17 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu';
+import { useAuthStore } from '@/lib/auth-store';
 
 export default function StaffHeader() {
+  const router = useRouter();
+  const logout = useAuthStore((state) => state.logout);
   const [searchQuery, setSearchQuery] = useState('');
+
+  const handleLogout = () => {
+    logout();
+    router.replace('/');
+  };
 
   return (
     <header className="fixed top-0 left-[248px] right-0 h-16 bg-white/95 backdrop-blur-md z-40 border-b border-border shadow-2xs flex items-center justify-between px-6 font-sans antialiased">
@@ -106,7 +115,7 @@ export default function StaffHeader() {
               <Building2 className="size-4 text-blue-600" /> Chuyển sang Portal Partner
             </DropdownMenuItem>
             <DropdownMenuSeparator />
-            <DropdownMenuItem render={<Link href="/" />} className="min-h-9 px-3 text-xs font-semibold text-red-600">
+            <DropdownMenuItem onClick={handleLogout} className="min-h-9 px-3 text-xs font-semibold text-red-600 focus:text-red-600">
               <LogOut className="size-4" /> Đăng xuất ca trực
             </DropdownMenuItem>
           </DropdownMenuContent>

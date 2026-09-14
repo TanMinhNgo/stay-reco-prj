@@ -141,7 +141,7 @@ export default function HotelDetailPage() {
         </div>
 
         {/* STICKY IN-PAGE NAV */}
-        <div className="sticky top-16 z-40 bg-white border border-stone-200 shadow-xs rounded-xl px-4 py-2.5 mb-8 flex items-center justify-between">
+        <div className="sticky top-16 z-30 mb-8 flex items-center justify-between rounded-xl border border-stone-200 bg-white px-4 py-2.5 shadow-xs lg:top-20">
           <div className="flex items-center space-x-6 text-xs sm:text-sm font-medium overflow-x-auto whitespace-nowrap text-slate-600 py-1">
             <a href="#overview" className="text-[#10395c] font-bold border-b-2 border-[#10395c] pb-1">Tổng quan</a>
             <a href="#rooms" className="hover:text-[#10395c] pb-1">Các hạng phòng trống</a>
@@ -678,7 +678,7 @@ export default function HotelDetailPage() {
           </div>
 
           {/* RIGHT STICKY SIDEBAR (4 COLS) */}
-          <div className="lg:col-span-4 sticky top-24 space-y-4">
+          <div className="space-y-4 lg:sticky lg:top-36 lg:col-span-4">
             <div className="bg-white border-2 border-sky-100 rounded-2xl p-5 shadow-lg relative">
               <div className="flex items-baseline justify-between mb-4">
                 <div>

@@ -2,7 +2,7 @@
 
 import type { ReactNode } from 'react';
 import Link from 'next/link';
-import { usePathname } from 'next/navigation';
+import { usePathname, useRouter } from 'next/navigation';
 import {
   Bell,
   ChevronDown,
@@ -10,6 +10,7 @@ import {
   CircleHelp,
   CreditCard,
   LayoutDashboard,
+  LogOut,
   ReceiptText,
   Search,
   ShieldCheck,
@@ -17,6 +18,16 @@ import {
   UsersRound,
 } from 'lucide-react';
 import { Button } from '@/components/ui/button';
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuGroup,
+  DropdownMenuItem,
+  DropdownMenuLabel,
+  DropdownMenuSeparator,
+  DropdownMenuTrigger,
+} from '@/components/ui/dropdown-menu';
+import { useAuthStore } from '@/lib/auth-store';
 
 const templateImage =
   'https://lh3.googleusercontent.com/aida/AEtjO1V-SCfN5vRag32eaaMCe725o3qjMzRhq78BRcuhKmOXxEDu4G8qm577peTkqU28fF62pdny08VmbaOwjGzlFo32VJpAA8SPA924onlWgQ2t92x5iGKeuhw1fCMiUdigsg6mge97P7ahRot5alw95ynt0-n2m7IucAr968MgN5mTjYAV6AnplZ0Xx-7f4H3KdFhb1vm9RS4hCaI81jJK3nFDIJCSwTS5926q0xHmfGl3sY60Y-Y_wuhSWwMDAhg2Nz8K1d9sN9cn';
@@ -44,6 +55,13 @@ const navigation = [
 
 export function DashboardShell({ children }: { children: ReactNode }) {
   const pathname = usePathname();
+  const router = useRouter();
+  const logout = useAuthStore((state) => state.logout);
+
+  const handleLogout = () => {
+    logout();
+    router.replace('/');
+  };
   return (
     <div className="min-h-dvh bg-background font-(family-name:--font-body) text-foreground">
       <aside className="fixed inset-y-0 left-0 z-50 hidden w-64 flex-col justify-between bg-white shadow-[0_1px_8px_rgba(0,0,0,0.04)] lg:flex">
@@ -148,28 +166,28 @@ export function DashboardShell({ children }: { children: ReactNode }) {
               </span>
             </Button>
             <div className="hidden h-6 w-px bg-border sm:block" />
-            <div className="flex items-center gap-3">
-              <div className="relative">
-                <img
-                  src={templateImage}
-                  alt="Profile"
-                  className="size-8 rounded-full object-cover"
-                />
-                <span className="absolute bottom-0 right-0 size-2.5 rounded-full bg-success ring-2 ring-card" />
-              </div>
-              <div className="hidden text-left md:block">
-                <p className="text-xs font-semibold leading-none">
-                  Trần Đình Quân{' '}
-                  <span className="ml-1.5 rounded bg-warning-soft px-1.5 py-0.5 text-[10px] font-medium text-warning">
-                    Admin
-                  </span>
-                </p>
-                <p className="mt-1 text-[11px] text-muted-foreground">
-                  admin@stayreco.vn
-                </p>
-              </div>
-              <ChevronDown size={18} className="text-muted-foreground" />
-            </div>
+            <DropdownMenu modal={false}>
+              <DropdownMenuTrigger className="flex items-center gap-3 rounded-lg px-1 py-1 text-left hover:bg-muted focus-visible:outline-none">
+                <div className="relative">
+                  <img src={templateImage} alt="Profile" className="size-8 rounded-full object-cover" />
+                  <span className="absolute bottom-0 right-0 size-2.5 rounded-full bg-success ring-2 ring-card" />
+                </div>
+                <div className="hidden text-left md:block">
+                  <p className="text-xs font-semibold leading-none">Trần Đình Quân <span className="ml-1.5 rounded bg-warning-soft px-1.5 py-0.5 text-[10px] font-medium text-warning">Admin</span></p>
+                  <p className="mt-1 text-[11px] text-muted-foreground">admin@stayreco.vn</p>
+                </div>
+                <ChevronDown size={18} className="text-muted-foreground" />
+              </DropdownMenuTrigger>
+              <DropdownMenuContent align="end" className="min-w-48 rounded-xl p-2 shadow-card">
+                <DropdownMenuGroup>
+                  <DropdownMenuLabel className="px-3 py-2 text-xs">Tài khoản quản trị</DropdownMenuLabel>
+                </DropdownMenuGroup>
+                <DropdownMenuSeparator />
+                <DropdownMenuItem onClick={handleLogout} className="min-h-10 px-3 text-sm text-destructive focus:text-destructive">
+                  <LogOut className="size-4" /> Đăng xuất
+                </DropdownMenuItem>
+              </DropdownMenuContent>
+            </DropdownMenu>
           </div>
         </header>
         <main className="min-h-[calc(100dvh-4rem)] bg-background px-4 pb-12 pt-8 md:px-8">
