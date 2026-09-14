@@ -1,6 +1,7 @@
 'use client';
 
 import { ChevronLeft, ChevronRight, MoreHorizontal } from 'lucide-react';
+import { Button } from '@/components/ui/button';
 import { cn } from '@/lib/utils';
 
 type PageItem = number | 'ellipsis-start' | 'ellipsis-end';
@@ -47,6 +48,7 @@ export default function Pagination({
   onPageChange,
   className,
   siblingCount = 1,
+  ariaLabel = 'Phân trang',
 }: PaginationProps) {
   if (totalPages <= 1) return null;
 
@@ -60,37 +62,41 @@ export default function Pagination({
   };
 
   return (
-    <nav className={cn('flex w-full justify-center', className)}>
-      <ul className="flex items-center gap-1 sm:gap-1.5">
+    <nav className={cn('flex w-full justify-center', className)} aria-label={ariaLabel}>
+      <ul className="flex items-center gap-0.5 sm:gap-1">
         <li>
-          <button
+          <Button
             type="button"
+            variant="ghost"
+            size="icon-sm"
             onClick={() => goToPage(page - 1)}
             disabled={page === 1}
-            className="inline-flex size-11 items-center justify-center rounded-lg text-foreground transition-colors hover:bg-muted disabled:pointer-events-none disabled:text-muted-foreground/50 focus-visible:outline-none"
+            className="size-8 rounded-md"
             aria-label="Trang trước"
           >
             <ChevronLeft
-              className="size-5"
+              className="size-4"
               strokeWidth={2}
               aria-hidden="true"
             />
-          </button>
+          </Button>
         </li>
 
         {pageItems.map((item) =>
           typeof item !== 'number' ? (
             <li
               key={item}
-              className="flex size-11 items-center justify-center"
+              className="flex size-8 items-center justify-center"
               aria-hidden="true"
             >
-              <MoreHorizontal className="size-5" strokeWidth={2} />
+              <MoreHorizontal className="size-4" strokeWidth={2} />
             </li>
           ) : (
             <li key={item}>
-              <button
+              <Button
                 type="button"
+                variant={item === page ? 'outline' : 'ghost'}
+                size="icon-sm"
                 onClick={() => goToPage(item)}
                 aria-current={item === page ? 'page' : undefined}
                 aria-label={
@@ -99,32 +105,34 @@ export default function Pagination({
                     : `Đi tới trang ${item}`
                 }
                 className={cn(
-                  'inline-flex size-11 items-center justify-center rounded-xl text-base font-medium transition-colors focus-visible:outline-none',
+                  'size-8 rounded-md text-xs font-medium',
                   item === page
-                    ? 'border border-border bg-white text-foreground shadow-[0_1px_2px_rgb(32_43_54/4%)]'
-                    : 'text-foreground hover:bg-muted',
+                    ? 'bg-white text-foreground shadow-[0_1px_2px_rgb(32_43_54/4%)]'
+                    : 'text-foreground',
                 )}
               >
                 {item}
-              </button>
+              </Button>
             </li>
           ),
         )}
 
         <li>
-          <button
+          <Button
             type="button"
+            variant="ghost"
+            size="icon-sm"
             onClick={() => goToPage(page + 1)}
             disabled={page === totalPages}
-            className="inline-flex size-11 items-center justify-center rounded-lg text-foreground transition-colors hover:bg-muted disabled:pointer-events-none disabled:text-muted-foreground/50 focus-visible:outline-none"
+            className="size-8 rounded-md"
             aria-label="Trang sau"
           >
             <ChevronRight
-              className="size-5"
+              className="size-4"
               strokeWidth={2}
               aria-hidden="true"
             />
-          </button>
+          </Button>
         </li>
       </ul>
     </nav>

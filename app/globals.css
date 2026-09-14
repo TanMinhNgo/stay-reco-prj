@@ -61,8 +61,8 @@
   --radius-3xl: 1.5rem;
   --radius-4xl: 2rem;
 
-  --shadow-card: 0 4px 16px rgb(32 43 54 / 5%);
-  --shadow-dialog: 0 16px 48px rgb(32 43 54 / 14%);
+  --shadow-card: 0 1px 2px rgb(40 48 54 / 3%), 0 10px 28px rgb(40 48 54 / 4%);
+  --shadow-dialog: 0 20px 56px rgb(40 48 54 / 14%);
 
   --container-marketplace: 75rem;
   --spacing-public-header: 4.5rem;
@@ -87,35 +87,35 @@
   color-scheme: light;
 
   /* Fixed StayReco brand tokens. */
-  --sr-primary: #234e70;
-  --sr-primary-hover: #193b56;
-  --sr-primary-soft: #eaf0f5;
+  --sr-primary: #124b6d;
+  --sr-primary-hover: #0c3a57;
+  --sr-primary-soft: #e7f1f7;
   --sr-on-primary: #ffffff;
-  --sr-background: #f7f5f0;
+  --sr-background: #f4f7fb;
   --sr-surface: #ffffff;
-  --sr-surface-hover: #f1eee8;
-  --sr-text: #202b36;
-  --sr-text-secondary: #59636e;
-  --sr-border-subtle: #e4e0d8;
-  --sr-border-control: #858b91;
-  --sr-accent: #9c513a;
-  --sr-accent-soft: #f5ebe5;
-  --sr-success: #35624a;
-  --sr-success-soft: #edf4ee;
-  --sr-warning: #865d23;
-  --sr-warning-soft: #fbf2e3;
-  --sr-danger: #ae3f3f;
-  --sr-danger-soft: #fbefec;
-  --sr-info: #234e70;
-  --sr-info-soft: #eaf0f5;
-  --sr-neutral-soft: #eeece7;
-  --sr-disabled-text: #737a80;
-  --sr-focus-ring: #234e70;
-  --sr-chart-1: #234e70;
-  --sr-chart-2: #9c513a;
+  --sr-surface-hover: #f7fafc;
+  --sr-text: #17324d;
+  --sr-text-secondary: #617187;
+  --sr-border-subtle: #dce5ef;
+  --sr-border-control: #a8b7c7;
+  --sr-accent: #ae583c;
+  --sr-accent-soft: #faeee9;
+  --sr-success: #27704d;
+  --sr-success-soft: #eaf7ef;
+  --sr-warning: #9a6425;
+  --sr-warning-soft: #fff5e6;
+  --sr-danger: #b54747;
+  --sr-danger-soft: #fdf0f0;
+  --sr-info: #124b6d;
+  --sr-info-soft: #e7f1f7;
+  --sr-neutral-soft: #f0f4f8;
+  --sr-disabled-text: #7b8798;
+  --sr-focus-ring: #2372a0;
+  --sr-chart-1: #124b6d;
+  --sr-chart-2: #ae583c;
   --sr-chart-3: #6f806b;
   --sr-chart-4: #937645;
-  --sr-chart-5: #737d87;
+  --sr-chart-5: #718197;
 
   /* Semantic tokens consumed by the shared shadcn components. */
   --background: var(--sr-background);
@@ -152,6 +152,153 @@
   --sidebar-accent-foreground: var(--sr-primary);
   --sidebar-border: var(--sr-border-subtle);
   --sidebar-ring: var(--sr-focus-ring);
+}
+
+/* Role accents inherit the same product foundation but express different jobs. */
+.partner-role {
+  --sr-primary: #2d6f9f;
+  --sr-primary-hover: #245b82;
+  --sr-primary-soft: #eaf3f9;
+  --sr-background: #f7fafc;
+  --sr-surface-hover: #f5f9fb;
+  --sr-text: #233b4b;
+  --sr-text-secondary: #657b89;
+  --sr-border-subtle: #dde8ef;
+  --sr-border-control: #afc2ce;
+  --sr-accent: #d47a52;
+  --sr-accent-soft: #fbefe8;
+  --sr-success: #3f7a61;
+  --sr-success-soft: #eaf6ef;
+  --sr-warning: #9a7040;
+  --sr-warning-soft: #fbf4e8;
+  --sr-danger: #aa5a55;
+  --sr-danger-soft: #fbeeed;
+  --sr-info: #2d6f9f;
+  --sr-info-soft: #eaf3f9;
+  --sr-focus-ring: #6a9ab6;
+  --sr-chart-1: #2d6f9f;
+  --sr-chart-2: #d47a52;
+  --sr-chart-3: #4d9474;
+  --sr-chart-4: #8b6fbe;
+  --sr-chart-5: #748996;
+  --background: var(--sr-background);
+  --foreground: var(--sr-text);
+  --card: var(--sr-surface);
+  --card-foreground: var(--sr-text);
+  --popover: var(--sr-surface);
+  --popover-foreground: var(--sr-text);
+  --primary: var(--sr-primary);
+  --primary-foreground: var(--sr-on-primary);
+  --secondary: #f3f6f6;
+  --secondary-foreground: var(--sr-text);
+  --muted: #f3f6f6;
+  --muted-foreground: var(--sr-text-secondary);
+  --accent: var(--sr-primary-soft);
+  --accent-foreground: var(--sr-primary);
+  --destructive: var(--sr-danger);
+  --border: var(--sr-border-subtle);
+  --input: var(--sr-border-control);
+  --ring: var(--sr-focus-ring);
+  --chart-1: var(--sr-chart-1);
+  --chart-2: var(--sr-chart-2);
+  --chart-3: var(--sr-chart-3);
+  --chart-4: var(--sr-chart-4);
+  --chart-5: var(--sr-chart-5);
+  --sidebar: var(--sr-surface);
+  --sidebar-foreground: var(--sr-text);
+  --sidebar-primary: var(--sr-primary);
+  --sidebar-primary-foreground: var(--sr-on-primary);
+  --sidebar-accent: var(--sr-primary-soft);
+  --sidebar-accent-foreground: var(--sr-primary);
+  --sidebar-border: var(--sr-border-subtle);
+  --sidebar-ring: var(--sr-focus-ring);
+}
+
+.manager-role {
+  --sr-primary: #5264a0;
+  --sr-primary-hover: #414f83;
+  --sr-primary-soft: #eef0fa;
+  --sr-background: #f8f9fc;
+  --sr-surface-hover: #f7f8fc;
+  --sr-text: #303951;
+  --sr-text-secondary: #6a748b;
+  --sr-border-subtle: #e0e4ef;
+  --sr-border-control: #b6bece;
+  --sr-accent: #b28a45;
+  --sr-accent-soft: #f8f1e4;
+  --sr-success: #39715b;
+  --sr-success-soft: #eaf5ef;
+  --sr-warning: #9a7441;
+  --sr-warning-soft: #fbf4e9;
+  --sr-danger: #a75658;
+  --sr-danger-soft: #fbeef0;
+  --sr-info: #5264a0;
+  --sr-info-soft: #eef0fa;
+  --sr-focus-ring: #8494c5;
+  --sr-chart-1: #5264a0;
+  --sr-chart-2: #b28a45;
+  --sr-chart-3: #3f8268;
+  --sr-chart-4: #9b6aa8;
+  --sr-chart-5: #77839a;
+  --background: var(--sr-background);
+  --foreground: var(--sr-text);
+  --card: var(--sr-surface);
+  --card-foreground: var(--sr-text);
+  --popover: var(--sr-surface);
+  --popover-foreground: var(--sr-text);
+  --primary: var(--sr-primary);
+  --primary-foreground: var(--sr-on-primary);
+  --secondary: #f3f4f6;
+  --secondary-foreground: var(--sr-text);
+  --muted: #f3f4f6;
+  --muted-foreground: var(--sr-text-secondary);
+  --accent: var(--sr-primary-soft);
+  --accent-foreground: var(--sr-primary);
+  --destructive: var(--sr-danger);
+  --border: var(--sr-border-subtle);
+  --input: var(--sr-border-control);
+  --ring: var(--sr-focus-ring);
+  --chart-1: var(--sr-chart-1);
+  --chart-2: var(--sr-chart-2);
+  --chart-3: var(--sr-chart-3);
+  --chart-4: var(--sr-chart-4);
+  --chart-5: var(--sr-chart-5);
+  --sidebar: var(--sr-surface);
+  --sidebar-foreground: var(--sr-text);
+  --sidebar-primary: var(--sr-primary);
+  --sidebar-primary-foreground: var(--sr-on-primary);
+  --sidebar-accent: var(--sr-primary-soft);
+  --sidebar-accent-foreground: var(--sr-primary);
+  --sidebar-border: var(--sr-border-subtle);
+  --sidebar-ring: var(--sr-focus-ring);
+}
+
+/*
+ * KPI cards are the intentional visual high-points of each workspace.
+ * This accent rail is reserved for measurable value, so long operational
+ * sessions retain a calm reading surface.
+ */
+.partner-role .sr-dense-ui {
+  --role-kpi: #2d6f9f;
+}
+
+.manager-role .sr-dense-ui {
+  --role-kpi: #5264a0;
+}
+
+.partner-role .sr-dense-ui [data-slot='card']:has(.text-kpi),
+.manager-role .sr-dense-ui [data-slot='card']:has(.text-kpi) {
+  border-color: color-mix(in srgb, var(--role-kpi) 20%, var(--border));
+  box-shadow: inset 0 3px 0 var(--role-kpi), var(--shadow-card);
+}
+
+.partner-role .sr-dense-ui .text-kpi,
+.partner-role .sr-dense-ui .text-price,
+.manager-role .sr-dense-ui .text-kpi,
+.manager-role .sr-dense-ui .text-price {
+  color: var(--role-kpi) !important;
+  font-weight: 750;
+  letter-spacing: -0.035em;
 }
 
 @layer base {
@@ -279,6 +426,92 @@
       font-size: 1.375rem;
       line-height: 1.875rem;
     }
+  }
+}
+
+/* Dense operational workspace shared by Partner and Manager portals. */
+@layer utilities {
+  .sr-dense-ui {
+    font-size: 0.875rem;
+  }
+
+  .sr-dense-ui h1 {
+    font-size: clamp(1.5rem, 2vw, 1.875rem) !important;
+    line-height: 1.25 !important;
+  }
+
+  .sr-dense-ui h2 {
+    font-size: 1rem;
+    line-height: 1.4;
+  }
+
+  .sr-dense-ui h3 {
+    font-size: 0.875rem;
+    line-height: 1.4;
+  }
+
+  .sr-dense-ui .text-sm {
+    font-size: 0.8125rem !important;
+    line-height: 1.25rem !important;
+  }
+
+  .sr-dense-ui .text-lg {
+    font-size: 1rem !important;
+    line-height: 1.4rem !important;
+  }
+
+  .sr-dense-ui .text-xl {
+    font-size: 1.125rem !important;
+    line-height: 1.5rem !important;
+  }
+
+  .sr-dense-ui .text-2xl,
+  .sr-dense-ui .text-3xl,
+  .sr-dense-ui .text-4xl,
+  .sr-dense-ui .text-kpi {
+    font-size: 1.5rem !important;
+    line-height: 1.875rem !important;
+  }
+
+  .sr-dense-ui [data-slot='button'] {
+    font-size: 0.8125rem;
+  }
+
+  .sr-dense-ui table {
+    width: 100% !important;
+    min-width: 0 !important;
+    table-layout: fixed;
+  }
+
+  .sr-dense-ui table th,
+  .sr-dense-ui table td {
+    min-width: 0 !important;
+    padding: 0.625rem 0.5rem !important;
+    font-size: 0.75rem !important;
+    line-height: 1.0625rem !important;
+    vertical-align: top;
+    white-space: normal;
+    overflow-wrap: anywhere;
+    word-break: normal;
+  }
+
+  .sr-dense-ui table th {
+    font-size: 0.6875rem !important;
+    line-height: 0.9375rem !important;
+  }
+
+  .sr-dense-ui table th:first-child {
+    width: 18% !important;
+  }
+
+  .sr-dense-ui table button,
+  .sr-dense-ui table [class*='rounded-full'] {
+    font-size: 0.6875rem !important;
+    line-height: 0.9375rem !important;
+  }
+
+  .sr-dense-ui [data-slot='card'].flex-wrap {
+    flex-direction: row;
   }
 }
 

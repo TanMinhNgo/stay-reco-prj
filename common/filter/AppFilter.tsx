@@ -67,6 +67,8 @@ type AppFilterProps = {
   initialValues?: FilterValues;
   initialSearch?: string;
   searchPlaceholder?: string;
+  showSearch?: boolean;
+  variant?: 'toolbar' | 'embedded';
   debounceMs?: number;
   onSearchChange?: (query: string) => void;
   onFiltersChange?: (values: FilterValues) => void;
@@ -103,6 +105,8 @@ export default function AppFilter({
   initialValues = {},
   initialSearch = '',
   searchPlaceholder = 'Tìm kiếm...',
+  showSearch = true,
+  variant = 'toolbar',
   debounceMs = 400,
   onSearchChange,
   onFiltersChange,
@@ -113,7 +117,7 @@ export default function AppFilter({
   const [values, setValues] = useState<FilterValues>(initialValues);
   const debouncedSearch = useDebounce(searchQuery, debounceMs);
   const activeFilterCount = useMemo(() => countActiveFilters(values), [values]);
-  const hasActiveFilters = Boolean(searchQuery.trim()) || activeFilterCount > 0;
+  const hasActiveFilters = (showSearch && Boolean(searchQuery.trim())) || activeFilterCount > 0;
 
   useEffect(() => {
     onSearchChange?.(debouncedSearch.trim());
@@ -136,13 +140,16 @@ export default function AppFilter({
   return (
     <section
       className={cn(
-        'flex flex-col gap-3 rounded-xl border border-border bg-white p-3 shadow-card',
+        'flex flex-wrap items-center gap-2',
+        showSearch ? 'w-full' : 'w-auto',
+        variant === 'toolbar'
+          ? 'rounded-xl border border-border bg-card p-2.5 shadow-[0_1px_2px_rgb(40_48_54/3%),0_6px_18px_rgb(40_48_54/3%)]'
+          : 'rounded-none border-0 bg-transparent p-0 shadow-none',
         className,
       )}
       aria-label="Bộ lọc dữ liệu"
     >
-      <div className="flex flex-col gap-3 xl:flex-row xl:items-center">
-        <div className="relative w-full xl:max-w-sm">
+      {showSearch && <div className="relative min-w-0 flex-1 sm:max-w-[24rem]">
           <Search
             className="pointer-events-none absolute top-1/2 left-3 size-4 -translate-y-1/2 text-muted-foreground"
             strokeWidth={1.75}
@@ -153,7 +160,7 @@ export default function AppFilter({
             value={searchQuery}
             onChange={(event) => setSearchQuery(event.target.value)}
             placeholder={searchPlaceholder}
-            className="h-11 bg-white pr-10 pl-9 text-sm"
+            className="h-9 rounded-lg border-border/80 bg-muted/35 pr-9 pl-9 text-sm shadow-none focus-visible:bg-card"
             aria-label={searchPlaceholder}
           />
           {searchQuery && (
@@ -162,15 +169,15 @@ export default function AppFilter({
               variant="ghost"
               size="icon-sm"
               onClick={() => setSearchQuery('')}
-              className="absolute top-1/2 right-2 -translate-y-1/2 text-muted-foreground"
+              className="absolute top-1/2 right-1 size-7 -translate-y-1/2 rounded-md text-muted-foreground"
               aria-label="Xóa nội dung tìm kiếm"
             >
               <X className="size-4" aria-hidden="true" />
             </Button>
           )}
-        </div>
+        </div>}
 
-        <div className="flex flex-1 flex-wrap items-center gap-2">
+      <div className={cn('flex min-w-0 flex-1 flex-wrap items-center gap-2', !showSearch && 'flex-none')}>
           {filters.map((filter) => {
             if (filter.type === 'select') {
               const rawValue = values[filter.key];
@@ -193,7 +200,7 @@ export default function AppFilter({
                     )
                   }
                 >
-                  <SelectTrigger className="h-11 min-w-40 bg-white px-3">
+                  <SelectTrigger className="h-9 min-w-[10.5rem] rounded-lg border-border/80 bg-muted/35 px-3 text-sm shadow-none hover:bg-card">
                     <SelectValue>{selectedLabel}</SelectValue>
                   </SelectTrigger>
                   <SelectContent align="start" className="rounded-xl p-1.5">
@@ -228,7 +235,7 @@ export default function AppFilter({
 
               return (
                 <Popover key={filter.key}>
-                  <PopoverTrigger className="inline-flex h-11 min-w-40 items-center justify-between gap-2 rounded-lg border border-input bg-white px-3 text-sm text-foreground focus-visible:outline-none">
+                  <PopoverTrigger className="inline-flex h-9 min-w-[10.5rem] items-center justify-between gap-2 rounded-lg border border-border/80 bg-muted/35 px-3 text-sm text-foreground shadow-none hover:bg-card focus-visible:outline-none">
                     <span className="truncate">{filter.label}</span>
                     <span className="ml-auto flex items-center gap-1.5">
                       {selectedValues.length > 0 && (
@@ -296,7 +303,7 @@ export default function AppFilter({
 
             return (
               <Popover key={filter.key}>
-                <PopoverTrigger className="inline-flex h-11 min-w-48 items-center gap-2 rounded-lg border border-input bg-white px-3 text-sm text-foreground focus-visible:outline-none">
+                <PopoverTrigger className="inline-flex h-9 min-w-[12.5rem] items-center gap-2 rounded-lg border border-border/80 bg-muted/35 px-3 text-sm text-foreground shadow-none hover:bg-card focus-visible:outline-none">
                   <CalendarDays
                     className="size-4 shrink-0 text-muted-foreground"
                     strokeWidth={1.75}
@@ -331,9 +338,9 @@ export default function AppFilter({
             <Button
               type="button"
               variant="ghost"
-              size="lg"
+              size="sm"
               onClick={resetFilters}
-              className="h-11 px-3 text-muted-foreground"
+              className="h-9 rounded-lg px-2.5 text-xs text-muted-foreground"
             >
               <X className="size-4" aria-hidden="true" />
               Xóa bộ lọc
@@ -342,7 +349,6 @@ export default function AppFilter({
               )}
             </Button>
           )}
-        </div>
       </div>
 
       {filters.length > 0 && (
