@@ -34,6 +34,7 @@ type NavbarProps = {
   onNotificationClick?: () => void;
   showSidebarTrigger?: boolean;
   className?: string;
+  context?: { name: string; meta?: string; status?: string };
 };
 
 function getInitials(name: string) {
@@ -56,6 +57,7 @@ export default function Navbar({
   onNotificationClick,
   showSidebarTrigger = false,
   className,
+  context,
 }: NavbarProps) {
   const [query, setQuery] = useState('');
   const visibleNotificationCount =
@@ -69,7 +71,7 @@ export default function Navbar({
   return (
     <header
       className={cn(
-        'flex min-h-16 items-center gap-3 border-b border-border bg-white px-4 sm:px-6',
+        'flex min-h-20 items-center gap-3 border-b border-border bg-white px-4 sm:px-6',
         className,
       )}
     >
@@ -79,9 +81,17 @@ export default function Navbar({
           aria-label="Mở thanh điều hướng"
         />
       )}
+      {context && (
+        <div className="hidden min-w-64 items-center gap-3 rounded-xl bg-muted px-3 py-2 xl:flex">
+          <span className="grid size-8 shrink-0 place-items-center rounded-lg bg-card text-primary shadow-sm"><House className="size-4" /></span>
+          <span className="min-w-0 flex-1"><strong className="block truncate text-xs text-foreground">{context.name}</strong>{context.meta && <span className="block truncate text-[10px] text-muted-foreground">{context.meta}</span>}</span>
+          {context.status && <span className="rounded-full bg-success-soft px-2 py-1 text-[9px] font-semibold text-success">{context.status}</span>}
+          <ChevronDown className="size-3.5 text-muted-foreground" />
+        </div>
+      )}
       <form
         onSubmit={handleSearch}
-        className="relative hidden w-full max-w-xl md:block"
+        className="relative hidden min-w-0 w-full max-w-xl md:block"
         role="search"
       >
         <Search
