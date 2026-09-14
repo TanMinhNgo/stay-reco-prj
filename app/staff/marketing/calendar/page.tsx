@@ -2,8 +2,6 @@
 
 import React, { useState } from "react";
 import Link from "next/link";
-import StaffSidebar from "@/components/staff/StaffSidebar";
-import StaffHeader from "@/components/staff/StaffHeader";
 import {
   CalendarDays,
   Plus,
@@ -60,11 +58,8 @@ export default function StaffMarketingCalendarPage() {
   ]);
 
   return (
-    <div className="min-h-screen bg-[#f7f9ff] font-sans antialiased text-foreground">
-      <StaffSidebar />
-      <StaffHeader />
-
-      <main className="pl-[248px] pt-16 min-h-screen">
+    <div className="font-sans antialiased text-foreground">
+      <main>
         <div className="p-8 space-y-6 max-w-7xl mx-auto w-full">
           {/* Breadcrumb & Navigation */}
           <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">

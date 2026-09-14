@@ -3,6 +3,7 @@
 import React, { useState } from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
+import { usePathname, useRouter } from 'next/navigation';
 import FloatingAiButton from '@/components/common/FloatingAiButton';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import {
@@ -33,13 +34,26 @@ import {
   Wallet,
   X
 } from 'lucide-react';
+import { roleDashboardPaths, useAuthStore } from '@/lib/auth-store';
 
 const navigation = [
-  { href: '/', label: 'Khám phá', active: true },
+  { href: '/', label: 'Khám phá' },
   { href: '/recommendations', label: 'Gợi ý cho bạn' },
   { href: '/assistant', label: 'Trợ lý AI' },
   { href: '/blog', label: 'Blog' },
 ];
+
+function isNavigationItemActive(pathname: string, href: string) {
+  return href === '/' ? pathname === '/' : pathname.startsWith(href);
+}
+
+const roleChannels = {
+  customer: null,
+  partner: { label: 'Kênh Đối tác Partner', icon: Building2, className: 'text-blue-700' },
+  staff: { label: 'Kênh Nhân viên Staff', icon: UserRound, className: 'text-teal-700' },
+  manager: { label: 'Kênh Quản lý Manager', icon: Shield, className: 'text-indigo-700' },
+  admin: { label: 'Admin Dashboard', icon: Sparkles, className: 'text-purple-700' },
+} as const;
 
 type HeaderProps = {
   isAuthenticated?: boolean;
@@ -65,20 +79,29 @@ function getInitials(name?: string) {
   );
 }
 
-export default function Header({
-  isAuthenticated = false,
-  user,
-  onLogout,
-}: HeaderProps) {
+export default function Header({}: HeaderProps) {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [language, setLanguage] = useState<Language>('vi');
   const [currency, setCurrency] = useState<Currency>('VND');
+  const pathname = usePathname();
+  const router = useRouter();
+  const user = useAuthStore((state) => state.user);
+  const hasHydrated = useAuthStore((state) => state.hasHydrated);
+  const logout = useAuthStore((state) => state.logout);
+  const isAuthenticated = hasHydrated && Boolean(user);
 
   const languageLabel = language === 'vi' ? 'VI' : 'ENG';
   const userName = user?.name ?? 'Khách hàng StayReco';
+  const roleChannel = user ? roleChannels[user.role] : null;
+  const RoleChannelIcon = roleChannel?.icon;
+  const authHref = `/login?next=${encodeURIComponent(pathname)}`;
+  const handleLogout = () => {
+    logout();
+    router.push('/');
+  };
 
   return (
-    <header className="relative z-40 border-b border-border bg-white">
+    <header className="sticky top-0 z-40 border-b border-border bg-white">
       <div className="mx-auto flex min-h-16 max-w-[100rem] items-center gap-4 px-4 sm:px-6 lg:min-h-20 lg:px-7">
         <Link
           href="/"
@@ -103,9 +126,9 @@ export default function Header({
             <Link
               key={item.href}
               href={item.href}
-              aria-current={item.active ? 'page' : undefined}
+              aria-current={isNavigationItemActive(pathname, item.href) ? 'page' : undefined}
               className={`relative py-6 text-base font-medium leading-6 transition-colors hover:text-primary focus-visible:outline-none ${
-                item.active
+                isNavigationItemActive(pathname, item.href)
                   ? 'text-primary after:absolute after:inset-x-0 after:bottom-4.5 after:h-0.5 after:bg-primary'
                   : 'text-muted-foreground'
               }`}
@@ -286,37 +309,29 @@ export default function Header({
                   Mật khẩu & Bảo mật
                 </DropdownMenuItem>
 
-                <DropdownMenuSeparator />
-                <DropdownMenuLabel className="px-3 py-1.5 text-[11px] font-bold text-muted-foreground uppercase tracking-wider">
-                  Chuyển Kênh hệ thống
-                </DropdownMenuLabel>
-                <DropdownMenuItem
-                  render={<Link href="/partner" />}
-                  className="min-h-10 px-3 text-sm cursor-pointer text-blue-700 font-semibold"
-                >
-                  <Building2 className="size-4" aria-hidden="true" />
-                  Kênh Đối tác Partner
-                </DropdownMenuItem>
-                <DropdownMenuItem
-                  render={<Link href="/manager" />}
-                  className="min-h-10 px-3 text-sm cursor-pointer text-indigo-700 font-semibold"
-                >
-                  <Shield className="size-4" aria-hidden="true" />
-                  Kênh Quản lý Manager
-                </DropdownMenuItem>
-                <DropdownMenuItem
-                  render={<Link href="/admin/dashboard" />}
-                  className="min-h-10 px-3 text-sm cursor-pointer text-purple-700 font-semibold"
-                >
-                  <Sparkles className="size-4" aria-hidden="true" />
-                  Admin Dashboard
-                </DropdownMenuItem>
+                {roleChannel && RoleChannelIcon && user && (
+                  <>
+                    <DropdownMenuSeparator />
+                    <DropdownMenuGroup>
+                      <DropdownMenuLabel className="px-3 py-1.5 text-[11px] font-bold text-muted-foreground uppercase tracking-wider">
+                        Kênh hệ thống
+                      </DropdownMenuLabel>
+                    </DropdownMenuGroup>
+                    <DropdownMenuItem
+                      render={<Link href={roleDashboardPaths[user.role]} />}
+                      className={`min-h-10 cursor-pointer px-3 text-sm font-semibold ${roleChannel.className}`}
+                    >
+                      <RoleChannelIcon className="size-4" aria-hidden="true" />
+                      {roleChannel.label}
+                    </DropdownMenuItem>
+                  </>
+                )}
 
                 <DropdownMenuSeparator />
                 <DropdownMenuItem
                   variant="destructive"
                   className="min-h-10 px-3 text-sm cursor-pointer"
-                  onClick={() => onLogout?.()}
+                  onClick={handleLogout}
                 >
                   <LogOut className="size-4" aria-hidden="true" />
                   Đăng xuất
@@ -325,7 +340,7 @@ export default function Header({
             </DropdownMenu>
           ) : (
             <Link
-              href="/login"
+              href={authHref}
               className="inline-flex h-9 items-center justify-center rounded-lg bg-primary px-4 text-xs sm:text-sm font-semibold text-primary-foreground transition-colors hover:bg-[#193b56] focus-visible:outline-none shadow-xs"
             >
               Đăng ký / Đăng nhập
@@ -376,10 +391,10 @@ export default function Header({
               <Link
                 key={item.href}
                 href={item.href}
-                aria-current={item.active ? 'page' : undefined}
+                aria-current={isNavigationItemActive(pathname, item.href) ? 'page' : undefined}
                 onClick={() => setIsMenuOpen(false)}
                 className={`rounded-lg px-4 py-3 text-base font-medium transition-colors focus-visible:outline-none ${
-                  item.active
+                  isNavigationItemActive(pathname, item.href)
                     ? 'bg-accent text-primary'
                     : 'text-foreground hover:bg-muted'
                 }`}
@@ -468,7 +483,7 @@ export default function Header({
                 </Link>
                 <button
                   type="button"
-                  onClick={() => onLogout?.()}
+                  onClick={handleLogout}
                   className="inline-flex h-12 items-center justify-center gap-2 rounded-lg border border-danger/25 px-4 text-sm font-medium text-danger focus-visible:outline-none"
                 >
                   <LogOut className="size-4" aria-hidden="true" />
@@ -477,7 +492,7 @@ export default function Header({
               </div>
             ) : (
               <Link
-                href="/login"
+                href={authHref}
                 onClick={() => setIsMenuOpen(false)}
                 className="mt-2 inline-flex h-12 items-center justify-center rounded-lg bg-primary px-4 text-sm font-semibold text-primary-foreground focus-visible:outline-none"
               >

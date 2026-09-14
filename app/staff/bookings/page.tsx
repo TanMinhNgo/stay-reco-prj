@@ -2,8 +2,6 @@
 
 import React, { useState } from 'react';
 import Link from 'next/link';
-import StaffSidebar from '@/components/staff/StaffSidebar';
-import StaffHeader from '@/components/staff/StaffHeader';
 import { Button } from '@/components/ui/button';
 import { Card } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
@@ -143,11 +141,8 @@ export default function StaffBookingsPage() {
   ];
 
   return (
-    <div className="min-h-screen bg-[#f7f9ff] font-sans antialiased text-foreground">
-      <StaffSidebar />
-      <StaffHeader />
-
-      <main className="pl-[248px] pt-16 min-h-screen">
+    <div className="font-sans antialiased text-foreground">
+      <main>
         <div className="p-8 space-y-6 pb-16">
           
           {/* Top Operational Banner */}

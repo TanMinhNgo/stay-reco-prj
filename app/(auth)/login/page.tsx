@@ -1,24 +1,43 @@
 'use client';
 
-import React, { useState } from 'react';
+import React, { Suspense, useState } from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
+import { useRouter, useSearchParams } from 'next/navigation';
 import Header from '@/components/layout/Header';
 import Footer from '@/components/layout/Footer';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
-import { Checkbox } from '@/components/ui/checkbox';
 import { Eye, EyeOff, Lock, Mail, ArrowRight, ShieldCheck, Star } from 'lucide-react';
+import { demoAccounts, getSafeNextPath, roleDashboardPaths, useAuthStore } from '@/lib/auth-store';
 
-export default function LoginPage() {
+function LoginPageContent() {
   const [showPassword, setShowPassword] = useState(false);
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
-  const [rememberMe, setRememberMe] = useState(false);
+  const [error, setError] = useState('');
+  const router = useRouter();
+  const searchParams = useSearchParams();
+  const login = useAuthStore((state) => state.login);
+  const next = searchParams.get('next');
+  const registerHref = next ? `/register?next=${encodeURIComponent(next)}` : '/register';
+  const forgotPasswordHref = next ? `/forgot-password?next=${encodeURIComponent(next)}` : '/forgot-password';
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
+    setError('');
+    const result = login(email, password);
+    if (!result.success) {
+      setError(result.message);
+      return;
+    }
+
+    router.replace(
+      result.user.role === 'customer'
+        ? getSafeNextPath(next)
+        : roleDashboardPaths[result.user.role],
+    );
   };
 
   return (
@@ -41,6 +60,18 @@ export default function LoginPage() {
                 <p className="text-muted-foreground text-sm mt-1.5">
                   Đăng nhập để khám phá các ưu đãi độc quyền và quản lý chuyến đi của bạn.
                 </p>
+              </div>
+
+              <div className="mb-6 rounded-xl border border-primary/15 bg-primary/5 p-3 text-xs">
+                <p className="font-semibold text-primary">Tài khoản demo theo vai trò</p>
+                <div className="mt-2 space-y-1 text-muted-foreground">
+                  {demoAccounts.map((account) => (
+                    <p key={account.role} className="flex flex-wrap justify-between gap-x-3 gap-y-0.5">
+                      <span className="capitalize">{account.role}</span>
+                      <span className="font-mono text-foreground">{account.email} / {account.password}</span>
+                    </p>
+                  ))}
+                </div>
               </div>
 
               {/* Social Login Buttons */}
@@ -117,7 +148,7 @@ export default function LoginPage() {
                       Mật khẩu
                     </Label>
                     <Link
-                      href="/forgot-password"
+                      href={forgotPasswordHref}
                       className="text-xs text-primary hover:underline font-medium"
                     >
                       Quên mật khẩu?
@@ -138,22 +169,14 @@ export default function LoginPage() {
                       type="button"
                       onClick={() => setShowPassword(!showPassword)}
                       className="absolute right-3.5 top-1/2 -translate-y-1/2 text-muted-foreground hover:text-foreground"
+                      aria-label={showPassword ? 'Ẩn mật khẩu' : 'Hiện mật khẩu'}
                     >
                       {showPassword ? <EyeOff className="size-4" /> : <Eye className="size-4" />}
                     </button>
                   </div>
                 </div>
 
-                <div className="flex items-center space-x-2 pt-1">
-                  <Checkbox
-                    id="remember"
-                    checked={rememberMe}
-                    onCheckedChange={(checked) => setRememberMe(!!checked)}
-                  />
-                  <Label htmlFor="remember" className="text-xs sm:text-sm font-normal text-muted-foreground cursor-pointer">
-                    Ghi nhớ đăng nhập trên thiết bị này
-                  </Label>
-                </div>
+                {error && <p className="rounded-lg bg-red-50 px-3 py-2 text-xs font-medium text-red-700" role="alert">{error}</p>}
 
                 <Button
                   type="submit"
@@ -166,7 +189,7 @@ export default function LoginPage() {
 
               <div className="mt-8 text-center text-xs sm:text-sm text-muted-foreground">
                 Chưa có tài khoản?{' '}
-                <Link href="/register" className="font-semibold text-primary hover:underline">
+                <Link href={registerHref} className="font-semibold text-primary hover:underline">
                   Đăng ký ngay
                 </Link>
               </div>
@@ -228,4 +251,8 @@ export default function LoginPage() {
       <Footer />
     </div>
   );
+}
+
+export default function LoginPage() {
+  return <Suspense fallback={null}><LoginPageContent /></Suspense>;
 }
