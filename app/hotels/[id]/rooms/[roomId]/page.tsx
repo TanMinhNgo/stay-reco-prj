@@ -614,7 +614,7 @@ export default function RoomDetailPage() {
 
               {/* Primary Action */}
               <div>
-                <Link href="/checkout" className="block">
+                <Link href="/booking" className="block">
                   <Button
                     className="w-full bg-[#1b3c57] hover:bg-[#152e43] text-white font-bold py-3.5 px-6 rounded-xl transition-all duration-200 text-sm shadow-md h-auto cursor-pointer"
                   >
