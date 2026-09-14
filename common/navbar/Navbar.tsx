@@ -1,10 +1,10 @@
-"use client";
+'use client';
 
-import Link from "next/link";
-import { Bell, ChevronDown, House, Search, UserRound } from "lucide-react";
-import { useState } from "react";
-import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
-import { Button } from "@/components/ui/button";
+import Link from 'next/link';
+import { Bell, ChevronDown, House, Search, UserRound } from 'lucide-react';
+import { useState } from 'react';
+import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
+import { Button } from '@/components/ui/button';
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -13,10 +13,10 @@ import {
   DropdownMenuLabel,
   DropdownMenuSeparator,
   DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu";
-import { Input } from "@/components/ui/input";
-import { SidebarTrigger } from "@/components/ui/sidebar";
-import { cn } from "@/lib/utils";
+} from '@/components/ui/dropdown-menu';
+import { Input } from '@/components/ui/input';
+import { SidebarTrigger } from '@/components/ui/sidebar';
+import { cn } from '@/lib/utils';
 
 type NavbarUser = {
   name: string;
@@ -38,27 +38,28 @@ type NavbarProps = {
 
 function getInitials(name: string) {
   return name
-    .split(" ")
+    .split(' ')
     .filter(Boolean)
     .slice(0, 2)
     .map((part) => part[0])
-    .join("")
+    .join('')
     .toUpperCase();
 }
 
 export default function Navbar({
-  user = { name: "Người dùng StayReco", role: "Tài khoản" },
+  user = { name: 'Người dùng StayReco', role: 'Tài khoản' },
   notificationCount = 0,
-  searchPlaceholder = "Tìm booking, khách hàng hoặc phòng...",
-  profileHref = "/profile",
-  homeHref = "/",
+  searchPlaceholder = 'Tìm booking, khách hàng hoặc phòng...',
+  profileHref = '/profile',
+  homeHref = '/',
   onSearch,
   onNotificationClick,
   showSidebarTrigger = false,
   className,
 }: NavbarProps) {
-  const [query, setQuery] = useState("");
-  const visibleNotificationCount = notificationCount > 9 ? "9+" : notificationCount;
+  const [query, setQuery] = useState('');
+  const visibleNotificationCount =
+    notificationCount > 9 ? '9+' : notificationCount;
 
   const handleSearch = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
@@ -66,9 +67,23 @@ export default function Navbar({
   };
 
   return (
-    <header className={cn("flex min-h-16 items-center gap-3 border-b border-border bg-white px-4 sm:px-6", className)}>
-      {showSidebarTrigger && <SidebarTrigger className="size-10 shrink-0 md:hidden" aria-label="Mở thanh điều hướng" />}
-      <form onSubmit={handleSearch} className="relative hidden w-full max-w-xl md:block" role="search">
+    <header
+      className={cn(
+        'flex min-h-16 items-center gap-3 border-b border-border bg-white px-4 sm:px-6',
+        className,
+      )}
+    >
+      {showSidebarTrigger && (
+        <SidebarTrigger
+          className="size-10 shrink-0 md:hidden"
+          aria-label="Mở thanh điều hướng"
+        />
+      )}
+      <form
+        onSubmit={handleSearch}
+        className="relative hidden w-full max-w-xl md:block"
+        role="search"
+      >
         <Search
           className="pointer-events-none absolute top-1/2 left-3 size-5 -translate-y-1/2 text-muted-foreground"
           strokeWidth={1.75}
@@ -90,7 +105,11 @@ export default function Navbar({
           size="icon-lg"
           onClick={onNotificationClick}
           className="relative size-11 rounded-lg text-muted-foreground hover:text-primary"
-          aria-label={notificationCount > 0 ? `Thông báo, có ${notificationCount} thông báo chưa đọc` : "Thông báo"}
+          aria-label={
+            notificationCount > 0
+              ? `Thông báo, có ${notificationCount} thông báo chưa đọc`
+              : 'Thông báo'
+          }
         >
           <Bell className="size-5" strokeWidth={1.75} aria-hidden="true" />
           {notificationCount > 0 && (
@@ -107,27 +126,49 @@ export default function Navbar({
           >
             <Avatar size="lg" className="size-10">
               {user.avatarUrl && <AvatarImage src={user.avatarUrl} alt="" />}
-              <AvatarFallback className="bg-accent text-sm font-semibold text-primary">{getInitials(user.name)}</AvatarFallback>
+              <AvatarFallback className="bg-accent text-sm font-semibold text-primary">
+                {getInitials(user.name)}
+              </AvatarFallback>
             </Avatar>
             <span className="hidden min-w-0 sm:flex sm:max-w-40 sm:flex-col">
-              <span className="truncate text-sm font-semibold text-foreground">{user.name}</span>
-              <span className="truncate text-xs text-muted-foreground">{user.role}</span>
+              <span className="truncate text-sm font-semibold text-foreground">
+                {user.name}
+              </span>
+              <span className="truncate text-xs text-muted-foreground">
+                {user.role}
+              </span>
             </span>
-            <ChevronDown className="hidden size-4 shrink-0 text-muted-foreground sm:block" aria-hidden="true" />
+            <ChevronDown
+              className="hidden size-4 shrink-0 text-muted-foreground sm:block"
+              aria-hidden="true"
+            />
           </DropdownMenuTrigger>
-          <DropdownMenuContent align="end" className="min-w-56 rounded-xl p-2 shadow-card">
+          <DropdownMenuContent
+            align="end"
+            className="min-w-56 rounded-xl p-2 shadow-card"
+          >
             <DropdownMenuGroup>
               <DropdownMenuLabel className="px-3 py-2">
-                <span className="block text-sm font-semibold text-foreground">{user.name}</span>
-                <span className="mt-0.5 block text-xs font-normal text-muted-foreground">{user.role}</span>
+                <span className="block text-sm font-semibold text-foreground">
+                  {user.name}
+                </span>
+                <span className="mt-0.5 block text-xs font-normal text-muted-foreground">
+                  {user.role}
+                </span>
               </DropdownMenuLabel>
             </DropdownMenuGroup>
             <DropdownMenuSeparator />
-            <DropdownMenuItem render={<Link href={profileHref} />} className="min-h-10 px-3 text-sm">
+            <DropdownMenuItem
+              render={<Link href={profileHref} />}
+              className="min-h-10 px-3 text-sm"
+            >
               <UserRound className="size-4" aria-hidden="true" />
               Hồ sơ cá nhân
             </DropdownMenuItem>
-            <DropdownMenuItem render={<Link href={homeHref} />} className="min-h-10 px-3 text-sm">
+            <DropdownMenuItem
+              render={<Link href={homeHref} />}
+              className="min-h-10 px-3 text-sm"
+            >
               <House className="size-4" aria-hidden="true" />
               Trang chủ
             </DropdownMenuItem>
