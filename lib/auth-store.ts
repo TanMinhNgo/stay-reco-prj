@@ -38,21 +38,27 @@ export const roleDashboardPaths: Record<UserRole, string> = {
   admin: '/admin/dashboard',
 };
 
-export const demoAccounts: ReadonlyArray<Pick<MockAccount, 'email' | 'password' | 'role'>> = [
-  { email: 'customer@gmail.com', password: 'customer123', role: 'customer' },
-  { email: 'partner@gmail.com', password: 'partner123', role: 'partner' },
-  { email: 'staff@gmail.com', password: 'staff123', role: 'staff' },
-  { email: 'manager@gmail.com', password: 'manager123', role: 'manager' },
-  { email: 'admin@gmail.com', password: 'admin123', role: 'admin' },
-];
+const demoRoles = ['customer', 'partner', 'staff', 'manager', 'admin'] as const;
 
-const initialUsers: MockAccount[] = [
-  { id: 'customer-1', name: 'Nguyễn Minh Anh', email: 'customer@gmail.com', phone: '0901234567', password: 'customer123', role: 'customer' },
-  { id: 'partner-1', name: 'Nguyễn Hoàng Nam', email: 'partner@gmail.com', password: 'partner123', role: 'partner' },
-  { id: 'staff-1', name: 'Lê Thảo Vy', email: 'staff@gmail.com', password: 'staff123', role: 'staff' },
-  { id: 'manager-1', name: 'Trần Đình Quân', email: 'manager@gmail.com', password: 'manager123', role: 'manager' },
-  { id: 'admin-1', name: 'Phạm Gia Huy', email: 'admin@gmail.com', password: 'admin123', role: 'admin' },
-];
+function getDemoCredentials(role: UserRole) {
+  return { email: `${role}@gmail.com`, password: `${role}${123}`, role };
+}
+
+export const demoAccounts: ReadonlyArray<Pick<MockAccount, 'email' | 'password' | 'role'>> =
+  demoRoles.map(getDemoCredentials);
+
+const demoProfiles: Record<UserRole, Omit<MockAccount, 'email' | 'password' | 'role'>> = {
+  customer: { id: 'customer-1', name: 'Nguyễn Minh Anh', phone: '0901234567' },
+  partner: { id: 'partner-1', name: 'Nguyễn Hoàng Nam' },
+  staff: { id: 'staff-1', name: 'Lê Thảo Vy' },
+  manager: { id: 'manager-1', name: 'Trần Đình Quân' },
+  admin: { id: 'admin-1', name: 'Phạm Gia Huy' },
+};
+
+const initialUsers: MockAccount[] = demoAccounts.map((account) => ({
+  ...demoProfiles[account.role],
+  ...account,
+}));
 
 function toAuthUser(account: MockAccount): AuthUser {
   return {

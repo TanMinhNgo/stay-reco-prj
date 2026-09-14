@@ -16,7 +16,7 @@ const navigation: Omit<SidebarItem, 'isActive'>[] = [
   { href: '/admin/ai-settings', label: 'Cấu hình AI toàn hệ thống', icon: Sparkles, section: 'AN TOÀN HỆ THỐNG' },
 ];
 
-export function AdminShell({ children }: { children: ReactNode }) {
+export function AdminShell({ children }: Readonly<{ children: ReactNode }>) {
   const pathname = usePathname();
   const items = navigation.map((item) => ({
     ...item,

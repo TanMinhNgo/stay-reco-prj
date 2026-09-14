@@ -55,15 +55,6 @@ const roleChannels = {
   admin: { label: 'Admin Dashboard', icon: Sparkles, className: 'text-purple-700' },
 } as const;
 
-type HeaderProps = {
-  isAuthenticated?: boolean;
-  user?: {
-    name?: string;
-    avatarUrl?: string;
-  };
-  onLogout?: () => void;
-};
-
 type Language = 'vi' | 'en';
 type Currency = 'VND' | 'USD';
 
@@ -79,7 +70,7 @@ function getInitials(name?: string) {
   );
 }
 
-export default function Header({}: HeaderProps) {
+export default function Header() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [language, setLanguage] = useState<Language>('vi');
   const [currency, setCurrency] = useState<Currency>('VND');

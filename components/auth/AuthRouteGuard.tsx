@@ -12,7 +12,7 @@ const protectedRoutes: Array<{ prefix: string; role: UserRole }> = [
   { prefix: '/admin', role: 'admin' },
 ];
 
-export default function AuthRouteGuard({ children }: { children: React.ReactNode }) {
+export default function AuthRouteGuard({ children }: Readonly<{ children: React.ReactNode }>) {
   const pathname = usePathname();
   const router = useRouter();
   const user = useAuthStore((state) => state.user);
@@ -39,7 +39,7 @@ export default function AuthRouteGuard({ children }: { children: React.ReactNode
     }
   }, [hasHydrated, pathname, requiredRoute, router, user]);
 
-  if (requiredRoute && (!hasHydrated || !user || user.role !== requiredRoute.role)) {
+  if (requiredRoute && (!hasHydrated || user?.role !== requiredRoute.role)) {
     return null;
   }
 

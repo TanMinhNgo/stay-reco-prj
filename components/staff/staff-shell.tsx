@@ -20,7 +20,7 @@ const navigation: Omit<SidebarItem, 'isActive'>[] = [
   { href: '/staff/marketing/analytics', label: 'Hiệu quả tiếp thị', icon: LineChart, section: 'NỘI DUNG & MARKETING' },
 ];
 
-export function StaffShell({ children }: { children: ReactNode }) {
+export function StaffShell({ children }: Readonly<{ children: ReactNode }>) {
   const pathname = usePathname();
   const items = navigation.map((item) => ({
     ...item,
